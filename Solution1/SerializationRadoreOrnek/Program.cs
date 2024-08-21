@@ -1,4 +1,4 @@
-namespace OdemeForm
+namespace SerializationRadoreOrnek
 {
     internal static class Program
     {
