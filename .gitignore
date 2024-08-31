@@ -4,6 +4,7 @@ obj/
 
 # Specific files
 appsettings.Development.json
+node_modules/
 
 # User-specific files
 *.user

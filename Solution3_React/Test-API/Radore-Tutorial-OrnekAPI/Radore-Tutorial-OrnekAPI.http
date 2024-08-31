@@ -1,0 +1,6 @@
+@Radore_Tutorial_OrnekAPI_HostAddress = http://localhost:5021
+
+GET {{Radore_Tutorial_OrnekAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
