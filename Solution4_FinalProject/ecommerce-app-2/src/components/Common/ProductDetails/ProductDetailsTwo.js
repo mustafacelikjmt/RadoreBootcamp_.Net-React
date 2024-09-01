@@ -1,7 +1,7 @@
 import ProductInfo from './ProductInfo'
 import RelatedProduct from './RelatedProduct'
 import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
@@ -12,8 +12,37 @@ import { RatingStar } from "rating-star";
 const ProductDetailsTwo = () => {
     let dispatch = useDispatch();
     let { id } = useParams();
-    dispatch({ type: "products/getProductById", payload: { id } });
+    const [img, setImg] = useState(null)
+    const [hoverImg, setHoverImg] = useState(null);
+    const [colorImages, setColorImages] = useState({});
+
+    useEffect(() => { // ürünü alıyoruz
+        dispatch({ type: "products/getProductById", payload: { id } });
+    }, [id, dispatch]);
     let product = useSelector((state) => state.products.single);
+    const loadImage = (imgPath) => {
+        return import(`../../../assets/img/product-image/${imgPath}`)
+            .then(module => module.default)
+            .catch(err => {
+                console.error(err);
+                return null;
+            });
+    }
+    useEffect(() => {
+        if (product) {
+            loadImage(product.img).then(image => setImg(image));
+            loadImage(product.hover_img).then(image => setHoverImg(image));
+
+            const colorImagesPromises = product.color.map(item =>
+                loadImage(item.img).then(image => ({ [item.color]: image }))
+            );
+
+            Promise.all(colorImagesPromises).then(results => {
+                const imagesObject = results.reduce((acc, curr) => ({ ...acc, ...curr }), {});
+                setColorImages(imagesObject);
+            });
+        }
+    }, [product]);
 
     // Add to cart
     const addToCart = async (id) => {
@@ -25,24 +54,13 @@ const ProductDetailsTwo = () => {
         dispatch({ type: "products/addToFavorites", payload: { id } })
     }
 
- 
     // Quenty Inc Dec
     const [count, setCount] = useState(1)
-    const incNum = () => {
-        setCount(count + 1)
-    }
-    const decNum = () => {
-        if (count > 0) {
-            setCount(count - 1)
-        } else {
-            alert("Stokta Yok!")
-            setCount(0)
-        }
-    }
-    const [img, setImg] = useState(product.img)
-    const colorSwatch = (i) => {
-        let data = product.color.find(item => item.color === i)
-        setImg(data.img)
+    const incNum = () => setCount(count + 1)
+    const decNum = () => count > 0 ? setCount(count - 1) : alert("Stokta Yok!");
+
+    const colorSwatch = (color) => {
+        setImg(colorImages[color] || product.img);
     }
 
     let settings = {
@@ -76,12 +94,12 @@ const ProductDetailsTwo = () => {
                                         <img src={img} alt="img" />
                                     </div>
                                     <div className="product_img_two_slider">
-                                        <img src={product.hover_img} alt="img" />
+                                        <img src={hoverImg} alt="img" />
                                     </div>
                                     {
                                         product.color.map(item => (
-                                            <div className="product_img_two_slider">
-                                                <img src={item.img} alt="img" />
+                                            <div className="product_img_two_slider" key={item.id}>
+                                                <img src={colorImages[item.color]} alt="img" />
                                             </div>
                                         ))
                                     }
@@ -97,7 +115,7 @@ const ProductDetailsTwo = () => {
                                         <RatingStar maxScore={5} rating={product.rating.rate} id="rating-star-common-2" />
                                         <span>({product.rating.count} Müşteri Yorumları)</span>
                                     </div>
-                                    <h4>{product.price}.00 TL <del>{parseInt(product.price) + 17}.00 TL</del> </h4>
+                                    <h4>{product.price} TL <del>{parseInt(product.price) + 17} TL</del> </h4>
                                     <p>{product.description}</p>
                                     <div className="customs_selects">
                                         <select name="product" className="customs_sel_box">
@@ -113,7 +131,7 @@ const ProductDetailsTwo = () => {
                                         <div className="product-variable-color">
                                             <label htmlFor="modal-product-color-red1">
                                                 <input name="modal-product-color" id="modal-product-color-red1"
-                                                    className="color-select" type="radio" onChange={() => { colorSwatch('red') }} defaultChecked/>
+                                                    className="color-select" type="radio" onChange={() => { colorSwatch('red') }} defaultChecked />
                                                 <span className="product-color-red"></span>
                                             </label>
                                             <label htmlFor="modal-product-color-green3">
@@ -151,10 +169,10 @@ const ProductDetailsTwo = () => {
                                                 <a href="#!" className="action wishlist" title="Wishlist" onClick={() => addToFav(product.id)}><i
                                                     className="fa fa-heart"></i>Favorilere Ekle</a>
                                             </li>
-                                         
+
                                         </ul>
                                         <a href="#!" className="theme-btn-one btn-black-overlay btn_sm"
-                                         onClick={() => addToCart(product.id)}>Sepete Ekle</a>
+                                            onClick={() => addToCart(product.id)}>Sepete Ekle</a>
                                     </div>
 
                                 </div>

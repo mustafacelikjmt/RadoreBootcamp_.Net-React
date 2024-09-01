@@ -1,10 +1,9 @@
-﻿using Radore.Web.Models;
-using Radore.Web.Services.IServices;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Radore.Web.Models;
+using Radore.Web.Services.IServices;
 using System.Diagnostics;
 
 namespace Radore.Web.Areas.Customer.Controllers
@@ -58,7 +57,6 @@ namespace Radore.Web.Areas.Customer.Controllers
             cartHeaderDto.UserId = UserId;
             CartDto cartDto = new CartDto();
             cartDto.CartHeader = cartHeaderDto;
-
 
             CartDetailsDto cartDetails = new CartDetailsDto()
             {
@@ -114,6 +112,5 @@ namespace Radore.Web.Areas.Customer.Controllers
         {
             return SignOut("Cookies", "oidc");
         }
-
     }
 }

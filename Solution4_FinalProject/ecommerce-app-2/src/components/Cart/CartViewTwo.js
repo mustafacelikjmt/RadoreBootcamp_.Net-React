@@ -53,7 +53,7 @@ const CartViewTwo = () => {
                                                         <td className="product_name">
                                                             <Link to={`/product-details-one/${data.id}`}> {data.title}</Link>
                                                         </td>
-                                                        <td className="product-price">${data.price}.00</td>
+                                                        <td className="product-price">${data.price}</td>
                                                         <td className="product_quantity">
                                                             <div className="plus-minus-input">
                                                                 <div className="input-group-button">

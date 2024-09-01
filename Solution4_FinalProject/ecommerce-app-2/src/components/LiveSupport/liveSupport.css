@@ -1,0 +1,80 @@
+/* Chat Button */
+.chat-button {
+    position: fixed;
+    bottom: 40px;
+    /* footer ı kapattığı için 20px arttırdık */
+    right: 20px;
+    background-color: #f79837;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 9999;
+}
+
+/* Chat Box */
+.chat-box {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 330px;
+    height: 400px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 9999;
+}
+
+.chat-header {
+    background-color: #f79837;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-body {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.chat-footer {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.chat-footer input {
+    flex: 1;
+    padding: 5px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.chat-footer button {
+    background-color: #ffb368;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: default;
+    pointer-events: none;
+}
+
+.chat-footer button.filled {
+    background-color: #ff9831;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    pointer-events: auto;
+}

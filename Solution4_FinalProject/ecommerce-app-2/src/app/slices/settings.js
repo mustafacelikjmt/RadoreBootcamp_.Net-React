@@ -1,26 +1,26 @@
-import {createSlice} from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const settingsSlice = createSlice({
-    name :'settings',
-    initialState : {
-        cookie : false,
-        stopCookie : false,
-        promoCenter : false,
-        promoStatus : false,
-        stopPromo : false,
+    name: 'settings',
+    initialState: {
+        cookie: false,
+        stopCookie: false,
+        promoCenter: false,
+        promoStatus: false,
+        stopPromo: false,
     },
     reducers
-    : {
-        stopPromo:(state)=> {
+        : {
+        stopPromo: (state) => {
             state.stopPromo = true
         },
-        promoStatus :(state)=> {
+        promoStatus: (state) => {
             state.promoStatus = true
         },
-        promoCenter :(state) => {
+        promoCenter: (state) => {
             state.promoCenter = !state.promoCenter
         },
-        stopCookie : (state) => {
+        stopCookie: (state) => {
             state.stopCookie = true
         },
         cookie: (state) => {

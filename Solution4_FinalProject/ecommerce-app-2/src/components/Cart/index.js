@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Coupon from './Coupon'
 import TotalCart from './TotalCart'
 import { Link } from 'react-router-dom'
@@ -8,6 +8,23 @@ import { useDispatch, useSelector } from "react-redux";
 const CartArea = () => {
     let dispatch = useDispatch();
     let carts = useSelector((state) => state.products.carts);
+
+    // Sepete eklenen tüm resim yolları
+    const [imagePaths, setImagePaths] = useState({});
+
+    useEffect(() => {
+        carts.forEach(data => {
+            import(`../../assets/img/product-image/${data.img}`)
+                .then(module => {
+                    setImagePaths(prevState => ({
+                        ...prevState,
+                        [data.id]: module.default
+                    }));
+                })
+                .catch(err => console.error(err));
+        });
+    }, [carts]);
+
     // Remove from Cart
     const rmProduct = (id) => {
         dispatch({ type: "products/removeCart", payload: { id } });
@@ -50,7 +67,7 @@ const CartArea = () => {
                                                         </td>
                                                         <td className="product_thumb">
                                                             <Link to={`/product-details-one/${data.id}`}>
-                                                                <img src={data.img} alt="img" />
+                                                                <img src={imagePaths[data.id] || ''} alt="img" />
                                                             </Link>
                                                         </td>
                                                         <td className="product_name">
@@ -58,14 +75,13 @@ const CartArea = () => {
                                                                 {data.title}
                                                             </Link>
                                                         </td>
-                                                        <td className="product-price">{data.price}.00 TL</td>
+                                                        <td className="product-price">{data.price} TL</td>
                                                         <td className="product_quantity">
                                                             <input min="1" max="100" type="number" onChange={e => cartValUpdate(e.currentTarget.value, data.id)} defaultValue={data.quantity || 1} />
                                                         </td>
-                                                        <td className="product_total">{data.price * (data.quantity || 1)}.00 TL</td>
+                                                        <td className="product_total">{data.price * (data.quantity || 1)} TL</td>
                                                     </tr>
                                                 ))
-
                                                 }
                                             </tbody>
                                         </table>
@@ -75,7 +91,6 @@ const CartArea = () => {
                                             ? <button className="theme-btn-one btn-black-overlay btn_sm" type="button" onClick={() => clearCarts()}>Sepeti Temizle</button>
                                             : null
                                         }
-
                                     </div>
                                 </div>
                             </div>

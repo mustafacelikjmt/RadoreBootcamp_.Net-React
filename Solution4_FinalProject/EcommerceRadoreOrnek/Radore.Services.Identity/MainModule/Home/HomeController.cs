@@ -1,14 +1,9 @@
 // Copyright (c) Duende Software. All rights reserved.
 // See LICENSE in the project root for license information.
 
-
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 using Duende.IdentityServer.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityServerHost.Quickstart.UI
 {

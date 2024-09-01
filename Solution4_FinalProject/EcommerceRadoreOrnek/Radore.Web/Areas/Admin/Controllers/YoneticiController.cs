@@ -15,11 +15,9 @@ namespace Radore.Web.Areas.Admin.Controllers
             return View();
         }
 
-		public IActionResult AdminLogout()
-		{
-			return SignOut("Cookies", "oidc");
-		}
-
-
-	}
+        public IActionResult AdminLogout()
+        {
+            return SignOut("Cookies", "oidc");
+        }
+    }
 }

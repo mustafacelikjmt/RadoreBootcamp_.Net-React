@@ -11,7 +11,7 @@ namespace Radore.Services.ProductAPI.Repository
         private readonly ApplicationDbContext _db;
         private IMapper _mapper;
 
-        //Constructor Injection 
+        //Constructor Injection
         public ProductRepository(ApplicationDbContext db, IMapper mapper)
         {
             _db = db;

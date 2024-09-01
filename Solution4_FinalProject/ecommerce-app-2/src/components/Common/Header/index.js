@@ -9,12 +9,38 @@ import svg from '../../../assets/img/svg/cancel.svg'
 import logoWhite from '../../../assets/img/logo-white.png'
 import svgsearch from '../../../assets/img/svg/search.svg'
 import Swal from 'sweetalert2'
+
 const Header = () => {
     let carts = useSelector((state) => state.products.carts);
     let favorites = useSelector((state) => state.products.favorites);
     const [click, setClick] = useState(false);
     const history = useNavigate();
     let dispatch = useDispatch();
+
+    const [imagePaths, setImagePaths] = useState({});
+
+    useEffect(() => {
+        carts.forEach(data => {
+            import(`../../../assets/img/product-image/${data.img}`)
+                .then(module => {
+                    setImagePaths(prevState => ({
+                        ...prevState,
+                        [data.id]: module.default
+                    }));
+                })
+                .catch(err => console.error(err));
+        });
+        favorites.forEach(data => {
+            import(`../../../assets/img/product-image/${data.img}`)
+                .then(module => {
+                    setImagePaths(prevState => ({
+                        ...prevState,
+                        [data.id]: module.default
+                    }));
+                })
+                .catch(err => console.error(err));
+        });
+    }, [carts, favorites]);
 
     const rmCartProduct = (id) => {
         dispatch({ type: "products/removeCart", payload: { id } });
@@ -298,7 +324,7 @@ const Header = () => {
                                 <div className="offcanvas-wishlist-item-block">
                                     <Link to={`/product-details-two/${data.id}`}
                                         className="offcanvas-wishlist-item-image-link" >
-                                        <img src={data.img} alt="img"
+                                        <img src={imagePaths[data.id] || ''} alt="img"
                                             className="offcanvas-wishlist-image" />
                                     </Link>
                                     <div className="offcanvas-wishlist-item-content">
@@ -323,7 +349,7 @@ const Header = () => {
                     </ul>
                     <div className="offcanvas-cart-total-price">
                         <span className="offcanvas-cart-total-price-text">Toplam :</span>
-                        <span className="offcanvas-cart-total-price-value">{cartTotal()}.00 TL</span>
+                        <span className="offcanvas-cart-total-price-value">{cartTotal()} TL</span>
                     </div>
                     <ul className="offcanvas-cart-action-button">
                         <li>
@@ -354,7 +380,7 @@ const Header = () => {
                                 <div className="offcanvas-wishlist-item-block">
                                     <Link to={`/product-details-one/${data.id}`}
                                         className="offcanvas-wishlist-item-image-link" >
-                                        <img src={data.img} alt="img"
+                                        <img src={imagePaths[data.id] || ''} alt="img"
                                             className="offcanvas-wishlist-image" />
                                     </Link>
                                     <div className="offcanvas-wishlist-item-content">

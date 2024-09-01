@@ -1,15 +1,7 @@
-
-using Radore.Web.Services.IServices;
-using Radore.Web.Services;
 using Microsoft.AspNetCore.Authentication;
 using Radore.Web;
 using Radore.Web.Services;
 using Radore.Web.Services.IServices;
-using Radore.Web.Services.IServices;
-using Radore.Web.Services;
-using Microsoft.AspNetCore.Cors.Infrastructure;
-using Radore.Web.Services.IServices;
-using Radore.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,7 +35,6 @@ builder.Services.AddAuthentication(options =>
         options.TokenValidationParameters.RoleClaimType = "role";
         options.Scope.Add("radore");
         options.SaveTokens = true;
-
     });
 
 var app = builder.Build();

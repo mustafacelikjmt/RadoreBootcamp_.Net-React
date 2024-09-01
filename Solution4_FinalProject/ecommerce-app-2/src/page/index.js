@@ -6,16 +6,18 @@ import FashionBanner from "./Fashion/Banner";
 import BannerBottom from "./Fashion/BannerBottom";
 import HotProduct from "./Fashion/HotProduct";
 import Footer from "../components/Common/Footer";
+import LiveSupport from "../components/LiveSupport/Index";
 
 const Fashion = () => {
 
-    return(
+    return (
         <div>
             <TopHeader />
             <Header />
             <FashionBanner />
             <BannerBottom />
             <HotProduct />
+            <LiveSupport />
             <Footer />
         </div>
     )

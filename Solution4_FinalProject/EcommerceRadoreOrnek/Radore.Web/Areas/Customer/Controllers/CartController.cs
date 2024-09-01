@@ -9,16 +9,17 @@ namespace Radore.Web.Areas.Customer.Controllers
     [Area("Customer")]
     public class CartController : Controller
     {
-      
         private readonly IProductService _productService;
         private readonly ICartService _cartService;
         private readonly ICouponService _couponService;
+
         public CartController(IProductService productService, ICartService cartService, ICouponService couponService)
         {
             _productService = productService;
             _couponService = couponService;
             _cartService = cartService;
         }
+
         public async Task<IActionResult> CartIndex()
         {
             return View(await LoadCartDtoBasedOnLoggedInUser());
@@ -60,14 +61,12 @@ namespace Radore.Web.Areas.Customer.Controllers
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             var response = await _cartService.RemoveFromCartAsync<ResponseDto>(cartDetailsId, accessToken);
 
-
             if (response != null && response.IsSuccess)
             {
                 return RedirectToAction(nameof(CartIndex));
             }
             return View();
         }
-
 
         public async Task<IActionResult> Checkout()
         {
@@ -99,6 +98,7 @@ namespace Radore.Web.Areas.Customer.Controllers
         {
             return View();
         }
+
         private async Task<CartDto> LoadCartDtoBasedOnLoggedInUser()
         {
             var userId = User.Claims.Where(u => u.Type == "sub")?.FirstOrDefault()?.Value;
@@ -113,11 +113,10 @@ namespace Radore.Web.Areas.Customer.Controllers
 
             if (cartDto.CartHeader != null)
             {
-
                 if (!string.IsNullOrEmpty(cartDto.CartHeader.CouponCode))
                 {
                     var coupon = await _couponService.GetCoupon<ResponseDto>(cartDto.CartHeader.CouponCode, accessToken);
-                    if (coupon != null && coupon.IsSuccess)
+                    if (coupon.Result != null && coupon.IsSuccess)
                     {
                         var couponObj = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(coupon.Result));
                         cartDto.CartHeader.DiscountTotal = couponObj.DiscountAmount;

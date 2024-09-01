@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
 import img from '../../assets/img/common/empty-cart.png'
@@ -14,6 +14,20 @@ const WishArea = () => {
     const clearFav = () => {
         dispatch({ type: "products/clearFav" });
     }
+    const [imagePaths, setImagePaths] = useState({});
+
+    useEffect(() => {
+        favorilerdekiUrunler.forEach(data => {
+            import(`../../assets/img/product-image/${data.img}`)
+                .then(module => {
+                    setImagePaths(prevState => ({
+                        ...prevState,
+                        [data.id]: module.default
+                    }));
+                })
+                .catch(err => console.error(err));
+        });
+    }, [favorilerdekiUrunler]);
 
 
     return (
@@ -44,7 +58,7 @@ const WishArea = () => {
                                                         </td>
                                                         <td className="product_thumb">
                                                             <Link to={`/product-details-one/${data.id}`}>
-                                                                <img src={data.img} alt="img" />
+                                                                <img src={imagePaths[data.id] || ''} alt="img" />
                                                             </Link>
                                                         </td>
                                                         <td className="product_name">
@@ -66,11 +80,9 @@ const WishArea = () => {
                                             ? <button className="theme-btn-one btn-black-overlay btn_sm" type="button" onClick={() => clearFav()}>Favorileri Temizle</button>
                                             : null
                                         }
-
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </section>
@@ -91,5 +103,4 @@ const WishArea = () => {
         </>
     )
 }
-
 export default WishArea
